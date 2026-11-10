@@ -25,10 +25,11 @@ builder.Services.AddOpenApi();
 const string userAgent = "FloodMonitor/0.1 (UNINTER academic project)";
 
 builder.Services.AddSingleton<PhotoStorage>();
+
 builder.Services.Configure<ForwardedHeadersOptions>(o =>
 {
-    o.ForwardedHeaders = ForwardedHeaders.XForwardedFor;
-    o.ForwardedForHeaderName = "X-Cliente-IP";   // header que o Caddy coloca (passo 5)
+    o.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+    o.ForwardedForHeaderName = "X-Cliente-IP";
     o.KnownIPNetworks.Clear();
     o.KnownProxies.Clear();
 });
@@ -72,10 +73,7 @@ builder.Services.AddSingleton<AdminTokenFilter>();
 
 var app = builder.Build();
 
-app.UseForwardedHeaders(new ForwardedHeadersOptions
-{
-    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
-});
+app.UseForwardedHeaders();
 
 using (var scope = app.Services.CreateScope())
 {
