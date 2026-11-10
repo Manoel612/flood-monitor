@@ -1,6 +1,6 @@
 # Imagem única: o ASP.NET Core serve a API e o build do Vue (wwwroot).
 #   docker build -t flood-monitor .
-#   docker run -p 8080:8080 -v flood-data:/app/App_Data flood-monitor
+#   docker run --env-file .env.production -p 8080:8080 -v flood-data:/app/App_Data flood-monitor
 
 # 1) Interface (Vue + Vite) → FloodMonitor.Server/wwwroot
 FROM node:22-alpine AS client

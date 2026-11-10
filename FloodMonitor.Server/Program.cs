@@ -8,6 +8,7 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.AspNetCore.HttpOverrides;
 
 UseDotAsDecimalSeparator();
+var envFile = EnvFile.LoadForCurrentEnvironment();
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -72,6 +73,9 @@ builder.Services.AddSingleton<AdminAccess>();
 builder.Services.AddSingleton<AdminTokenFilter>();
 
 var app = builder.Build();
+
+app.Logger.LogInformation("Environment {Environment}; variables from {EnvFile}", app.Environment.EnvironmentName,
+    envFile ?? "the system only (no .env file found)");
 
 app.UseForwardedHeaders();
 

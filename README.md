@@ -116,7 +116,24 @@ uma hospedagem com HTTPS.
 
 ## Configuração
 
-`FloodMonitor.Server/appsettings.json`:
+### Por ambiente
+
+| Ambiente | Configurações (vão para o git) | Senhas e tokens (nunca vão para o git) |
+|---|---|---|
+| Desenvolvimento (`dotnet run`, Visual Studio) | `appsettings.json` + `appsettings.Development.json` | `.env.development` na raiz do projeto |
+| Produção (Docker, Kubero) | `appsettings.json` + `appsettings.Production.json` | `.env.production` (`docker run --env-file .env.production ...`) ou o painel da hospedagem |
+
+- O ambiente vem de `ASPNETCORE_ENVIRONMENT`. O `dotnet run` usa `Development` (`Properties/launchSettings.json`), e a
+  imagem Docker usa `Production`.
+- O servidor lê sozinho o `.env.{ambiente}` (`Services/EnvFile.cs`), procurando na pasta atual e nas de cima. Uma
+  variável já definida no sistema ou no painel da hospedagem sempre vale mais que o arquivo, e linhas vazias depois
+  do `=` são ignoradas. O log da inicialização mostra qual arquivo foi lido.
+- Para criar os arquivos, copie o [`.env.example`](.env.example) para `.env.development` e `.env.production`. Use
+  tokens diferentes em cada um.
+- `appsettings.Development.json` mostra mais detalhes no log; `appsettings.Production.json` registra só avisos e erros.
+
+### Chaves do `appsettings.json`
+
 
 | Chave | Padrão | Para que serve |
 |---|---|---|
@@ -124,7 +141,9 @@ uma hospedagem com HTTPS.
 | `Rainfall:Enabled` | `true` | Busca em segundo plano os dados da seção Chuvas. Desative se estiver sem internet. |
 | `TimeZone` | `America/Sao_Paulo` | Fuso usado para agrupar métricas e evidências por dia e mês. |
 
-Variáveis de ambiente (modelo em [`.env.example`](.env.example); nunca coloque os valores no código ou no git):
+### Variáveis de ambiente
+
+Modelo em [`.env.example`](.env.example). Nunca coloque os valores no código, no `appsettings` ou no git.
 
 | Variável | Para que serve |
 |---|---|
@@ -236,18 +255,13 @@ O app registra visitas anônimas e avaliações. Os relatórios ficam na **área
 avaliações por perfil, últimos comentários e o botão para baixar as planilhas CSV (acessos, ocorrências
 e avaliações) para anexar ao relatório. As visitas à própria área administrativa não entram na contagem.
 
-Para ativar o login, defina o usuário, a senha e o token fora do projeto. No desenvolvimento, use os
-*user secrets* do .NET (ficam no seu usuário do Windows, não na pasta do projeto, então não vão para o git):
+Para ativar o login, preencha `Admin__Username`, `Admin__Password` e `Admin__Token` no `.env.development`
+(desenvolvimento) ou no `.env.production` / painel da hospedagem (produção) e reinicie o servidor.
+O token pode ser gerado com:
 
 ```bash
-cd FloodMonitor.Server
-dotnet user-secrets set Admin:Username "admin"
-dotnet user-secrets set Admin:Password "uma-senha-longa-e-forte"
-dotnet user-secrets set Admin:Token "$(node -e "console.log(require('crypto').randomBytes(32).toString('base64url'))")"
+node -e "console.log(require('crypto').randomBytes(32).toString('base64url'))"
 ```
-
-Reinicie o servidor depois. Em produção, cadastre `Admin__Username`, `Admin__Password` e `Admin__Token`
-nas variáveis de ambiente da hospedagem (ou no `.env` do Docker).
 
 Antes de aplicar com a comunidade:
 
