@@ -5,6 +5,7 @@ using FloodMonitor.Server.Services;
 using FloodMonitor.Server.Services.Rainfall;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.AspNetCore.HttpOverrides;
 
 UseDotAsDecimalSeparator();
 
@@ -24,6 +25,14 @@ builder.Services.AddOpenApi();
 const string userAgent = "FloodMonitor/0.1 (UNINTER academic project)";
 
 builder.Services.AddSingleton<PhotoStorage>();
+builder.Services.Configure<ForwardedHeadersOptions>(o =>
+{
+    o.ForwardedHeaders = ForwardedHeaders.XForwardedFor;
+    o.ForwardedForHeaderName = "X-Cliente-IP";   // header que o Caddy coloca (passo 5)
+    o.KnownIPNetworks.Clear();
+    o.KnownProxies.Clear();
+});
+
 builder.Services.AddHttpClient<GeocodingService>(client =>
 {
     client.BaseAddress = new Uri("https://nominatim.openstreetmap.org/");
@@ -62,6 +71,8 @@ builder.Services.AddSingleton<AdminAccess>();
 builder.Services.AddSingleton<AdminTokenFilter>();
 
 var app = builder.Build();
+
+app.UseForwardedHeaders();
 
 using (var scope = app.Services.CreateScope())
 {
