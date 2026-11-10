@@ -1,0 +1,22 @@
+# .NET
+bin/
+obj/
+*.user
+.vs/
+
+# Dados locais: banco SQLite e fotos enviadas
+FloodMonitor.Server/App_Data/
+
+# Build do Vue publicado dentro do servidor
+FloodMonitor.Server/wwwroot/
+
+# Node / Vite
+node_modules/
+dist/
+dev-dist/
+.vite/
+
+# Variáveis de ambiente com segredos (o modelo é o .env.example)
+.env
+.env.*
+!.env.example

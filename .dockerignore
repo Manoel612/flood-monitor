@@ -1,0 +1,12 @@
+**/bin/
+**/obj/
+**/node_modules/
+**/dist/
+**/dev-dist/
+**/.vite/
+.vs/
+.git/
+FloodMonitor.Server/App_Data/
+FloodMonitor.Server/wwwroot/
+.env
+.env.*

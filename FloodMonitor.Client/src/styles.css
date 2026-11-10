@@ -1,0 +1,107 @@
+html {
+  overflow-y: auto;
+}
+
+.page-content {
+  max-width: 1280px;
+  margin-inline: auto;
+  padding: 16px;
+}
+
+.layout-grid {
+  --v-row-columns: 4;
+}
+
+@media (min-width: 840px) {
+  .layout-grid {
+    --v-row-columns: 12;
+  }
+}
+
+.section ~ .section {
+  margin-top: 16px;
+}
+
+.v-card-title,
+.v-card-subtitle {
+  white-space: normal;
+  overflow-wrap: break-word;
+}
+
+.v-field:not(:hover):not(.v-field--focused) {
+  --v-field-border-opacity: var(--v-field-border-opacity);
+}
+
+.v-btn-toggle.border {
+  border-color: rgba(var(--v-theme-on-surface), var(--v-field-border-opacity)) !important;
+  overflow: hidden;
+}
+
+.v-btn-toggle.border > .v-btn {
+  border-radius: 0 !important;
+}
+
+.honeypot {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.leaflet-container {
+  font: inherit;
+  background: rgb(var(--v-theme-surface-light));
+}
+
+.v-theme--dark .leaflet-tile-pane {
+  filter: invert(1) hue-rotate(180deg) brightness(0.9) contrast(0.9) saturate(0.6);
+}
+
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+  background: rgb(var(--v-theme-surface));
+  color: rgb(var(--v-theme-on-surface));
+  border-radius: 8px;
+}
+
+.leaflet-popup-content {
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.leaflet-container a,
+.leaflet-container a.leaflet-popup-close-button {
+  color: rgb(var(--v-theme-primary));
+}
+
+.leaflet-bar a,
+.leaflet-bar a:hover {
+  background-color: rgb(var(--v-theme-surface));
+  color: rgb(var(--v-theme-on-surface));
+  border-bottom-color: rgba(var(--v-border-color), var(--v-border-opacity));
+}
+
+.leaflet-control-attribution {
+  background: rgba(var(--v-theme-surface), 0.85) !important;
+  color: rgb(var(--v-theme-on-surface));
+}
+
+.leaflet-tooltip {
+  background: rgb(var(--v-theme-surface));
+  color: rgb(var(--v-theme-on-surface));
+  border-color: rgba(var(--v-border-color), var(--v-border-opacity));
+}
+
+.map-pin {
+  background: none;
+  border: none;
+}
+
+.map-pin .mdi {
+  display: block;
+  font-size: 48px;
+  line-height: 48px;
+  color: rgb(var(--v-theme-primary));
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
+}
