@@ -72,7 +72,10 @@ builder.Services.AddSingleton<AdminTokenFilter>();
 
 var app = builder.Build();
 
-app.UseForwardedHeaders();
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+});
 
 using (var scope = app.Services.CreateScope())
 {
