@@ -10,6 +10,7 @@ RUN npm ci --no-audit --no-fund
 COPY FloodMonitor.Client/ ./
 RUN npm run build
 
+
 # 2) API (.NET 10)
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS server
 WORKDIR /src/FloodMonitor.Server
